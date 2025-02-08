@@ -30,17 +30,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen }) =>
     {
       name: "Build Resume",
       icon: FileText,
-      path: "/dashboard/resume",
+      path: "/resume",
     },
     {
       name: "Cover Letter",
       icon: PenBox,
-      path: "/dashboard/ai-cover-letter",
+      path: "/ai-cover-letter",
     },
     {
       name: "Interview Prep",
       icon: GraduationCap,
-      path: "/dashboard/interview",
+      path: "/interview",
     },
   ];
 

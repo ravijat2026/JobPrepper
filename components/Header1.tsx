@@ -23,13 +23,13 @@ const Header1 = () => {
           <SignedOut>
 
             <SignInButton>
-            <Link href="/dashboard" passHref>
+            <Link href="/onboarding" passHref>
               <Button variant="outline">Sign In</Button>
             </Link>
             </SignInButton>
           
           </SignedOut>
-          <Link href = {'/dashboard'}>
+          <Link href = {'/onboarding'}>
           <SignedIn>
           
           <Button variant="outline">Dashboard</Button>

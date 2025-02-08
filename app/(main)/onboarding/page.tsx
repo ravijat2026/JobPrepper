@@ -2,7 +2,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div className='flex items-center justify-center h-screen'>Cover-Letter</div>
+    <div className='flex h-screen justify-center items-center'>onboarding</div>
   )
 }
 
