@@ -15,7 +15,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header/>
-            <main className="min-h-screen">
+            <main className="min-h-screen container md:ml-64 mx-auto mt-24 mb-20 md:w-[82%]">
               {children}
             </main>
         
