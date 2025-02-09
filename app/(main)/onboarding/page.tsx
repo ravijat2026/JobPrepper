@@ -1,9 +1,19 @@
-import React from 'react'
+import { redirect } from "next/navigation";
+import { industries } from "@/data/industries";
+import OnboardingForm from "./_components/onboardingForm";
+import { getUserOnboardingStatus } from "@/actions/user";
 
-const page = () => {
+export default async function OnboardingPage() {
+ 
+  const { isOnboarded } = await getUserOnboardingStatus();
+
+  if (isOnboarded) {
+    redirect("/dashboard");
+  }
+
   return (
-    <div className='flex h-screen justify-center items-center'>onboarding</div>
-  )
+    <main>
+      <OnboardingForm industries={industries} />
+    </main>
+  );
 }
-
-export default page
