@@ -47,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen }) =>
   return (
     <>
       <div
-        className={`h-screen w-64 fixed top-16 left-0 p-6 z-50 flex flex-col space-y-4 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 ${isSidebarOpen ? 'block' : 'hidden'} md:block`}
+        className={`h-screen w-64 fixed top-16 left-0 p-6 z-50 flex flex-col space-y-4 bg-white dark:bg-black ${isSidebarOpen ? 'block' : 'hidden'} md:block`}
       >
         <div className="mt-4 flex flex-col gap-4">
           {navItems.map((item) => (
