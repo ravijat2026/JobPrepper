@@ -1,14 +1,8 @@
 import React from 'react'
-interface Props {
-    params: {
-      id: string;
-    };
-  }
 
-const page = async ({params}:Props) => {
-    const { id } = await params;
+ const page = async () => {
   return (
-    <div className='flex h-screen justify-center items-center'>cover letter : {id}</div>
+    <div className='flex h-screen justify-center items-center'>cover letter</div>
   )
 }
 
