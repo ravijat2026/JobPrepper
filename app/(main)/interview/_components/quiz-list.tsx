@@ -48,7 +48,7 @@ export default function QuizList({ assessments } : QuizListProps) {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="gradient-title text-3xl md:text-4xl">
+              <CardTitle className="text-3xl md:text-4xl">
                 Recent Quizzes
               </CardTitle>
               <CardDescription>

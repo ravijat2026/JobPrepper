@@ -83,6 +83,7 @@ model MockInterview {
   userId          String
   user            User      @relation(fields: [userId], references: [id])
   questions       Json[]    // Array of {question, answer, userAnswer, isCorrect}
+  userAnswers     String[]
   jobDescription  String?
   jobTitle        String
   createdAt        DateTime  @default(now())
