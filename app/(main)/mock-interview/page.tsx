@@ -8,7 +8,7 @@ const MockInterview = () => {
             Mock Interview Preparation
         </h1>
 
-        <h2 className='my-2'>Create and Start yoyr AI Mock Interview</h2>
+        <h2 className='my-2'>Create and Start your AI Mock Interview</h2>
 
         <div className='mt-8'>
             <AddNewInterview/>

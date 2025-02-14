@@ -89,7 +89,7 @@ const AddNewInterview = () => {
           <CardTitle className="text-center">
             <Button type="button" onClick={() => setOpenDialog(true)}>
               <PlusCircle className="h-4 w-4 mr-2" />
-              Add New
+              Create New
             </Button>
           </CardTitle>
         </CardHeader>
@@ -109,7 +109,7 @@ const AddNewInterview = () => {
               <CardHeader>
                 <CardTitle>{interview.jobTitle}</CardTitle>
                 <CardDescription>
-                  {format(new Date(interview.createdAt), "MMMM dd, yyyy HH:mm")}
+                  Created {format(new Date(interview.createdAt), "MMMM dd, yyyy HH:mm")}
                 </CardDescription>
               </CardHeader>
               <CardContent>

@@ -72,7 +72,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen }) =>
         <div className="pt-[300px] p-6">
           <SignedIn>
             <SignOutButton>
-              <Button variant="outline" className="dark:text-white">
+              <Button variant="destructive" className="dark:text-white">
                 <LogOut className="w-5 h-5" />
                 <span>Logout</span>
               </Button>
