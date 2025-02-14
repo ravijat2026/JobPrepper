@@ -72,7 +72,9 @@ export async function generateInterviewQuestions(jobPosition:string , jobDesc:st
 export async function saveInterviewQuestions(
   jobPosition: string,
   jobDesc: string,
-  questions: { question: string; correctAnswer: string }[]
+  questions: { question: string; correctAnswer: string }[],
+  userAnswers: string[],
+  interviewId?: string 
 ) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -87,21 +89,33 @@ export async function saveInterviewQuestions(
   if (!user) throw new Error("User not found");
 
   try {
-    const savedInterview = await db.mockInterview.create({
-      data: {
-        userId: user.id,
-        jobTitle: jobPosition,
-        jobDescription: jobDesc,
-        questions: questions.map((q) => ({
-          question: q.question,
-          correctAnswer: q.correctAnswer,
-          userAnswer: "", // Initially, userAnswer is empty
-          isCorrect: false, // Initially, isCorrect is false
-        })),
-      },
-    });
-
-    return savedInterview;
+    if (interviewId) {
+      // Update the existing interview
+      const updatedInterview = await db.mockInterview.update({
+        where: {
+          id: interviewId,
+        },
+        data: {
+          userAnswers: userAnswers,
+        },
+      });
+      return updatedInterview;
+    } else {
+      // Create a new interview
+      const savedInterview = await db.mockInterview.create({
+        data: {
+          userId: user.id,
+          jobTitle: jobPosition,
+          jobDescription: jobDesc,
+          questions: questions.map((q) => ({
+            question: q.question,
+            correctAnswer: q.correctAnswer,
+          })),
+          userAnswers: userAnswers,
+        },
+      });
+      return savedInterview;
+    }
   } catch (error) {
     console.error("Error saving interview questions:", error);
     throw new Error("Failed to save interview questions");
@@ -112,8 +126,6 @@ export async function saveInterviewQuestions(
 type InterviewQuestion = {
   question: string;
   correctAnswer: string;
-  userAnswer: string;
-  isCorrect: boolean;
 };
 
 export async function getInterviewQuestions(id: string) {
@@ -141,4 +153,33 @@ export async function getInterviewQuestions(id: string) {
     ...interview,
     questions, 
   };
+}
+
+export async function getMockInterviews() {
+  const { userId: clerkUserId } = await auth();
+  if (!clerkUserId) throw new Error("Unauthorized");
+
+  const user = await db.user.findUnique({
+    where: { clerkUserId },
+  });
+
+  if (!user) throw new Error("User not found");
+
+  const interviews = await db.mockInterview.findMany({
+    where: {
+      userId: user.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  
+
+  const formattedInterviews = interviews.map((interview) => ({
+    ...interview,
+    questions: interview.questions as InterviewQuestion[],
+  }));
+
+  return formattedInterviews;
 }

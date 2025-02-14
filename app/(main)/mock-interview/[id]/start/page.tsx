@@ -11,8 +11,6 @@ type InterviewParams = {
 type InterviewQuestion = {
   question: string;
   correctAnswer: string;
-  userAnswer: string;
-  isCorrect: boolean;
 };
 
 type InterviewData = {
@@ -23,6 +21,7 @@ type InterviewData = {
   jobTitle: string;
   jobDescription: string | null;
   questions: InterviewQuestion[];
+  userAnswers: string[];
 };
 
 type StartInterviewClientProps = {

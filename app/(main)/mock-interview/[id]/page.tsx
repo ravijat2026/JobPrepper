@@ -14,8 +14,6 @@ type InterviewParams = {
 type InterviewQuestion = {
   question: string;
   correctAnswer: string;
-  userAnswer: string;
-  isCorrect: boolean;
 };
 
 type InterviewData = {
@@ -26,6 +24,7 @@ type InterviewData = {
   jobTitle: string;
   jobDescription: string | null;  
   questions: InterviewQuestion[];
+  userAnswers: string[];
 };
 
 const Interview = ({ params }: { params: Promise<InterviewParams> }) => {

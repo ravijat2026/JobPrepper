@@ -4,12 +4,13 @@ import { Lightbulb, Volume2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Webcam from 'react-webcam';
 import useSpeechToText, { ResultType } from 'react-hook-speech-to-text';
+import { saveInterviewQuestions } from '@/actions/mock';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 type InterviewQuestion = {
   question: string;
   correctAnswer: string;
-  userAnswer: string;
-  isCorrect: boolean;
 };
 
 type InterviewData = {
@@ -20,6 +21,7 @@ type InterviewData = {
   jobTitle: string;
   jobDescription: string | null;
   questions: InterviewQuestion[];
+  userAnswers: string[];
 };
 
 type StartInterviewClientProps = {
@@ -30,6 +32,7 @@ const StartInterviewClient = ({ interviewData }: StartInterviewClientProps) => {
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [showAllAnswers, setShowAllAnswers] = useState(false);
+  const router = useRouter();
 
   const {
     error,
@@ -55,22 +58,46 @@ const StartInterviewClient = ({ interviewData }: StartInterviewClientProps) => {
     }
   }, [results, activeQuestion]);
 
-  const textToSpeech = (text:string)=>{
-    if('speechSynthesis' in window){
+  const textToSpeech = (text: string) => {
+    if ('speechSynthesis' in window) {
       const speech = new SpeechSynthesisUtterance(text);
       window.speechSynthesis.speak(speech);
-    }
-    else{
+    } else {
       alert('Your browser does not support text to speech');
     }
-  }
-
-  const handleQuestionChange = (index: number) => {
-    setActiveQuestion(index);
   };
 
-  const handleShowAllAnswers = () => {
-    setShowAllAnswers(true);
+  const finishInterview = async () => {
+    try {
+      if (!interviewData.jobTitle || !interviewData.jobDescription) {
+        alert("Please enter job position and description.");
+        return;
+      }
+      const savedInterview = await saveInterviewQuestions(
+        interviewData.jobTitle,
+        interviewData.jobDescription,
+        interviewData.questions,
+        userAnswers,
+        interviewData.id
+      );
+      toast.success("Interview completed!");
+      if (savedInterview && savedInterview.id) {
+        router.push(`/mock-interview/${savedInterview.id}/result`);
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Failed to save interview results.");
+    }
+  };
+
+  const handleNextQuestion = () => {
+    if (isRecording) {
+      stopSpeechToText();
+    }
+    if (activeQuestion < interviewData.questions.length - 1) {
+      setActiveQuestion((prev) => prev + 1);
+    } else {
+      finishInterview();
+    }
   };
 
   return (
@@ -84,7 +111,7 @@ const StartInterviewClient = ({ interviewData }: StartInterviewClientProps) => {
                 <h2
                   className={`p-2 text-sm text-center cursor-pointer rounded-lg 
                   ${activeQuestion === index ? 'bg-gray-300 dark:bg-gray-600' : 'bg-outline'}`}
-                  onClick={() => handleQuestionChange(index)}
+                  onClick={() => setActiveQuestion(index)}
                 >
                   Question {index + 1}
                 </h2>
@@ -95,7 +122,7 @@ const StartInterviewClient = ({ interviewData }: StartInterviewClientProps) => {
             {interviewData.questions[activeQuestion].question}
           </h2>
 
-          <Volume2 className='cursor-pointer' onClick={() => textToSpeech(interviewData.questions[activeQuestion].question)}/>
+          <Volume2 className='cursor-pointer' onClick={() => textToSpeech(interviewData.questions[activeQuestion].question)} />
 
           <div className="border rounded-lg p-5 dark:text-black bg-blue-100 mt-10 md:mt-20">
             <h2 className="flex gap-2 items-center">
@@ -119,6 +146,7 @@ const StartInterviewClient = ({ interviewData }: StartInterviewClientProps) => {
               }}
             />
           </div>
+          <div className='flex items-center justify-center gap-6'>
 
           <Button
             className="my-10"
@@ -128,43 +156,25 @@ const StartInterviewClient = ({ interviewData }: StartInterviewClientProps) => {
             {isRecording ? 'Stop Recording' : 'Start Recording'}
           </Button>
 
+          <Button
+            className="my-10"
+            onClick={handleNextQuestion}
+          >
+            {activeQuestion < interviewData.questions.length - 1 ? 'Next Question' : 'Finish'}
+          </Button>
+
+          </div>
+
           {/* Display the current answer for the active question */}
           <div className="mt-5 p-5 border rounded-lg w-full">
             <h2 className="text-lg font-bold">Your Answer:</h2>
             <p>{userAnswers[activeQuestion]}</p>
           </div>
-
-          {/* Button to show all answers */}
-          <Button
-            className="mt-5"
-            variant="outline"
-            onClick={handleShowAllAnswers}
-          >
-            Show All Answers
-          </Button>
+          
         </div>
       </div>
 
-      {/* Modal or Section to Display All Answers */}
-      {showAllAnswers && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-5 rounded-lg w-11/12 md:w-1/2 max-h-[80vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-5">All Answers</h2>
-            {interviewData.questions.map((q, index) => (
-              <div key={index} className="mb-5">
-                <h3 className="font-semibold">Question {index + 1}: {q.question}</h3>
-                <p><strong>Your Answer:</strong> {userAnswers[index] || "No answer recorded."}</p>
-              </div>
-            ))}
-            <Button
-              className="mt-5"
-              onClick={() => setShowAllAnswers(false)}
-            >
-              Close
-            </Button>
-          </div>
-        </div>
-      )}
+     
     </>
   );
 };
