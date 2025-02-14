@@ -10,6 +10,7 @@ import {
   PenBox,
   GraduationCap,
   LogOut,
+  Laptop,
 } from "lucide-react";
 import { SignedIn, SignOutButton } from "@clerk/nextjs";
 
@@ -42,6 +43,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen }) =>
       icon: GraduationCap,
       path: "/interview",
     },
+    {
+      name: "Mock Interview",
+      icon: Laptop,
+      path: "/mock-interview",
+    },
   ];
 
   return (
@@ -63,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen }) =>
           ))}
         </div>
 
-        <div className="pt-[360px] p-6">
+        <div className="pt-[300px] p-6">
           <SignedIn>
             <SignOutButton>
               <Button variant="outline" className="dark:text-white">
