@@ -27,8 +27,6 @@ const Header1 = () => {
               </Button>
             </Link>
         </SignedIn>
-
-
           <SignedOut>
             <SignInButton>
               <Button variant="outline">Sign In</Button>
