@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "./ui/button";
 
 import Link from "next/link";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import {SignedIn, SignedOut, SignInButton} from "@clerk/nextjs";
 
 import { ModeToggle } from "./ModeToggle";
 
@@ -20,22 +20,20 @@ const Header1 = () => {
         <div className="flex items-center space-x-2 md:space-x-4">
          
 
-          <SignedOut>
-
-            <SignInButton>
-            <Link href="/onboarding" passHref>
-              <Button variant="outline">Sign In</Button>
+        <SignedIn>
+            <Link href="/dashboard">
+              <Button variant="outline">
+                Dashboard
+              </Button>
             </Link>
-            </SignInButton>
-          
-          </SignedOut>
-          <Link href = {'/onboarding'}>
-          <SignedIn>
-          
-          <Button variant="outline">Dashboard</Button>
+        </SignedIn>
 
-          </SignedIn>
-          </Link>
+
+          <SignedOut>
+            <SignInButton>
+              <Button variant="outline">Sign In</Button>
+            </SignInButton>
+          </SignedOut>
 
           <ModeToggle/>
         </div>
