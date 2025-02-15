@@ -21,7 +21,7 @@ const Header1 = () => {
          
 
         <SignedIn>
-            <Link href="/dashboard">
+            <Link href="/onboarding">
               <Button variant="outline">
                 Dashboard
               </Button>
