@@ -51,7 +51,6 @@ interface OnboardingFormValues {
 const OnboardingForm = ({ industries } : OnboardingFormProps) => {
   const router = useRouter();
  const [selectedIndustry, setSelectedIndustry] = useState<Industry | null>(null);
-  ;
 
   const {
     loading: updateLoading,
