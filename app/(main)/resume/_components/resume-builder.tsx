@@ -22,7 +22,11 @@ import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/nextjs";
 import { entriesToMarkdown } from "@/app/lib/helper";
 import { resumeSchema } from "@/app/lib/schema";
-import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
+import dynamic from "next/dynamic";
+const html2pdf = dynamic(
+  () => import("html2pdf.js/dist/html2pdf.min.js"),
+  { ssr: false } // Disable server-side rendering for this import
+);
 
 
 interface ResumeBuilderProps {
@@ -125,6 +129,9 @@ export default function ResumeBuilder({ initialContent } : ResumeBuilderProps) {
     setIsGenerating(true);
     try {
       const element = document.getElementById("resume-pdf");
+      if (!element) {
+        throw new Error("Resume PDF element not found");
+      }
       const opt = {
         margin: [15, 15],
         filename: "resume.pdf",
@@ -133,6 +140,7 @@ export default function ResumeBuilder({ initialContent } : ResumeBuilderProps) {
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
       };
 
+      const html2pdf = (await import("html2pdf.js/dist/html2pdf.min.js")).default;
       await html2pdf().set(opt).from(element).save();
     } catch (error) {
       console.error("PDF generation error:", error);
