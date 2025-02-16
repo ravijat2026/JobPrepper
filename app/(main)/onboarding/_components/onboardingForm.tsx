@@ -78,6 +78,11 @@ const OnboardingForm = ({ industries } : OnboardingFormProps) => {
         ...values,
         industry: formattedIndustry,
       });
+      if (updateResult?.success && !updateLoading) {
+        toast.success("Profile completed successfully!");
+        router.push("/dashboard");
+        router.refresh();
+      }
     } catch (error) {
       console.error("Onboarding error:", error);
     }
