@@ -16,9 +16,15 @@ const IndustryInsightsPage = async () => {
 
 
   return (
-    <div className="container mx-auto">
+    <>
+      <div className="flex items-center justify-between mb-5">
+        <h1 className="text-6xl font-bold">Industry Insights</h1>
+      </div>
+      <div className="container mx-auto">
       <DashboardView insights = {insights} />
-    </div>
+      </div>
+    </>
+    
   )
 }
 
