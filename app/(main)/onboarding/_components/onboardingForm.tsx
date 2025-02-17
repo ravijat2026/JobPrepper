@@ -78,23 +78,15 @@ const OnboardingForm = ({ industries } : OnboardingFormProps) => {
         ...values,
         industry: formattedIndustry,
       });
-      if (updateResult?.success && !updateLoading) {
+      if (!updateLoading) {
         toast.success("Profile completed successfully!");
-        router.push("/dashboard");
-        router.refresh();
+        router.push("/dashboard"); // Directly push to the dashboard page
       }
     } catch (error) {
       console.error("Onboarding error:", error);
+      toast.error("An error occurred during onboarding.");
     }
   };
-
-  useEffect(() => {
-    if (updateResult?.success && !updateLoading) {
-      toast.success("Profile completed successfully!");
-      router.push("/dashboard");
-      router.refresh();
-    }
-  }, [updateResult, updateLoading]);
 
   const watchIndustry = watch("industry");
 
